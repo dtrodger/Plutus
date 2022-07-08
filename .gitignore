@@ -1,0 +1,32 @@
+# Editor and os ignores
+.vscode/
+.DS_Store
+.idea/
+# Python ignores
+__pycache__/
+build/
+dist/
+eggs/
+.eggs/
+sdist/
+*.egg
+*.egg-info
+venv/
+.pytest_cache/
+
+# coverage ignores
+htmlcov/
+.coverage
+
+# terraform ignores
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+
+# project specific ignores
+.env
+access.txt
+
+# logs
+/logs/*.log
+/logs/*.log.*

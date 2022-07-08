@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+  redis:
+    container_name: plutus-redis
+    hostname: redis
+    image: "redis:alpine"
+    ports:
+        - "6379:6379"
+    networks:
+      - crypto
+
+  redis-commander:
+    container_name: plutus-redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8080:8081"
+    networks:
+      - crypto
+
+  postgres:
+    container_name: plutus-postgres
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    networks:
+      - crypto
+    volumes:
+      - plutus-postgres-data:/var/lib/postgresql/data
+    restart: always
+  
+  pgadmin:
+    container_name: plutus-pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    networks:
+      - crypto
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@wisecode.ai
+      - PGADMIN_DEFAULT_PASSWORD=Welcometo2021!
+    ports:
+      - 5050:80
+    volumes:
+      - plutus-pgadmin-data:/var/lib/pgadmin
+
+networks:
+  crypto:
+    driver: bridge 
+
+volumes:
+  plutus-postgres-data:
+  plutus-pgadmin-data:
