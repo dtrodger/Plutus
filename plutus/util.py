@@ -9,9 +9,6 @@ import logging
 import logging.config
 import os
 import pathlib
-import json
-
-import boto3
 
 
 log = logging.getLogger(__name__)
@@ -107,7 +104,7 @@ def cwd():
 # ----------------------------------------------------------------------------------------------------------------------
 # Exceptions
 # ----------------------------------------------------------------------------------------------------------------------
-class Plutus(Exception):
+class PlutusException(Exception):
     """
     Plutus base exception
     """
@@ -130,7 +127,7 @@ def get_env_var(
 
     value = os.environ.get(key, default)
     if exce and not value:
-        raise Plutus(f"Missing required environment variable {key}")
+        raise PlutusException(f"Missing required environment variable {key}")
 
     if is_list:
         value = value.split(",")
@@ -156,7 +153,7 @@ def set_env_var(key, value, is_list=False, is_bool=False, is_int=False, exce=Fal
 
     if exce:
         if os.environ.get(key):
-            raise WISEcodeException(f"Environment {key} variable already exists")
+            raise PlutusException(f"Environment {key} variable already exists")
 
     if is_list:
         value = value.split(",")

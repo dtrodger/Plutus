@@ -24,7 +24,7 @@ class Price(db_util.SQLModel):
     trade_prices = relationship("TradePrice", backref="price")
 
     def __str__(self):
-        return f"{self.exchange} price for {self.price} at {self.instant}"
+        return f"{self.exchange} price for {self.symbol} at {self.instant}"
 
 
 class Trade(db_util.SQLModel):

@@ -43,8 +43,7 @@ async def process_ticker_channel_event(sqs, symbol, raw_event):
         event["instant"] = event_time
         event["symbol"] = symbol
         event["exchange"] = "ftx"
-        print(event)
-        # aws.send_sqs_price_queue_message(sqs, event)
+        aws.send_sqs_price_queue_message(sqs, event)
 
 
 def ticker_channel_subscription_request(symbol):

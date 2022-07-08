@@ -38,7 +38,7 @@ def handler(event, context):
                 )
                 log.info(f"Added {price}")
         except Exception as e:
-            log.error(f"Failed to process message {sqs_message}")
+            log.error(f"Failed to process message {sqs_message} with {e}")
 
 
 def sql_fields_from_sqs_message(sqs_message):

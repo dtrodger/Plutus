@@ -91,4 +91,4 @@ def send_sqs_price_queue_message(sqs, message):
     Sends a message to the SQS price queue
     """
 
-    send_sqs_message(sqs, util.get_env_var("SQS_PRICE_QUEUE_URL"), message)
+    send_sqs_message(sqs, util.get_env_var("SQS_TICKER_QUEUE_URL"), message)

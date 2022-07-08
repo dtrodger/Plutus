@@ -16,7 +16,7 @@ load_dotenv()
 
 from plutus import util
 from plutus.db import util as db_util
-from plutus.aws_ecs_task import process_price_channel as process_ticker_channel_ecs_task
+from plutus.aws_ecs_task import ticker_channel as ticker_channel_ecs_task
 
 
 util.configure_logging()
@@ -108,7 +108,7 @@ def flake8():
             shell=True,
             check=True,
         )
-    except:
+    except Exception:
         pass
 
 
@@ -124,7 +124,7 @@ def lint():
             shell=True,
             check=True,
         )
-    except:
+    except Exception:
         pass
 
 
@@ -136,16 +136,7 @@ def process_ticker_channel(exchange, symbol):
     Processes an exchange price feed
     """
 
-    asyncio.run(process_ticker_channel_ecs_task.handler(exchange, symbol))
-
-
-# @click.command()
-# def price_cache_sql_etl():
-#     """
-#     ETL price data from Redis to SQL
-#     """
-
-#     asyncio.run(channel_util.price_cache_sql_etl())
+    asyncio.run(ticker_channel_ecs_task.handler(exchange, symbol))
 
 
 def main():
@@ -163,7 +154,6 @@ def main():
         truncate_sqldb,
         lint,
         process_ticker_channel,
-        # price_cache_sql_etl
     ]:
         command_group.add_command(command)
 

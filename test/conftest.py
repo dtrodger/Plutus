@@ -49,5 +49,5 @@ def sqs_ticker_queue(sqs):
     """
 
     queue = sqs.create_queue(QueueName="ticker")
-    util.set_env_var("SQS_PRICE_QUEUE_URL", queue["QueueUrl"])
+    util.set_env_var("SQS_TICKER_QUEUE_URL", queue["QueueUrl"])
     return queue

@@ -1,0 +1,55 @@
+version: 0.2
+
+env:
+  variables:
+    BASE_PATH: terraform
+    CI_ASSUMED_ROLE: arn:aws:iam::110500050896:role/ci_testing-admin
+    SQL_PASSWORD: postgres
+    SQL_USER: postgres
+    ENVIRONMENT: ci
+    SQL_HOST: localhost
+    SQL_PORT: 5432
+    SQL_DATABASE: plutus
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+      docker: 19
+    commands:
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+  pre_build:
+    commands:
+      - echo Starting pre-build...
+      - export LC_ALL="en_US.utf8"
+      - echo Pre-build complete
+  build:
+    commands:
+      - echo Starting build...
+      - python3 -m venv venv
+      - source venv/bin/activate
+      - python -m pip install pip --upgrade
+      - pip install -r requirements.txt
+      - echo "Run linter..."
+      - flake8 
+      - python plutus/cli.py create-sqldb
+      - python plutus/cli.py upgrade-sqldb
+      - echo "Run Pytest unit tests..."
+      - python -m pytest -s test
+      - echo "Building Docker images"
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 642030467107.dkr.ecr.us-west-1.amazonaws.com
+      - export PROJECT_VERSION=$(cat setup.cfg | grep -i "version =" | cut -d'=' -f2 | tr -d '", ')
+      - docker build -f Dockerfile -t 642030467107.dkr.ecr.us-west-1.amazonaws.com/plutus:$PROJECT_VERSION .
+      - echo Build complete
+  post_build:
+    commands:
+      - echo Staring post build...
+      - echo Pushing Docker image to ECR
+      - bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"
+      - export PROJECT_VERSION=$(cat setup.cfg | grep -i "version =" | cut -d'=' -f2 | tr -d '", ')
+      - docker tag 729333591458.dkr.ecr.us-east-2.amazonaws.com/create-product-variants:$PROJECT_VERSION 729333591458.dkr.ecr.us-east-2.amazonaws.com/create-product-variants:latest
+      - docker push 729333591458.dkr.ecr.us-east-2.amazonaws.com/create-product-variants:$PROJECT_VERSION
+      - docker push 729333591458.dkr.ecr.us-east-2.amazonaws.com/create-product-variants:latest
+      - echo Build competed on `date`
+      - echo Post build complete

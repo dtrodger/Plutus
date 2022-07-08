@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: plutus-postgres
+    image: 642030467107.dkr.ecr.us-west-1.amazonaws.com/postgres:1.0
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    networks:
+      - plutus
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+
+networks:
+  plutus:
+    driver: bridge
+
+volumes:
+  postgres-data:

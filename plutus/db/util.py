@@ -19,8 +19,7 @@ from sqlalchemy import Column, BigInteger, DateTime
 from sqlalchemy import inspect, MetaData
 from sqlalchemy import text
 from sqlalchemy import func as sql_func
-
-from plutus.db.sqlalchemy_filters import apply_filters, apply_loads, apply_pagination, apply_sort
+from sqlalchemy_filters import apply_filters, apply_loads, apply_pagination, apply_sort
 
 
 log = logging.getLogger(__name__)
@@ -246,7 +245,7 @@ def sql_connection_string():
     Gets the SQL connection string from env vars
     """
 
-    return f"{os.environ['SQL_DRIVER']}://{os.environ['SQL_USER']}:{os.environ['SQL_PASSWORD']}@{os.environ['SQL_HOST']}:{os.environ['SQL_PORT']}/{os.environ['SQL_DATABASE']}"
+    return f"postgresql+pg8000://{os.environ['SQL_USER']}:{os.environ['SQL_PASSWORD']}@{os.environ['SQL_HOST']}:{os.environ['SQL_PORT']}/{os.environ['SQL_DATABASE']}"
 
 
 def get_sql_engine(reset=False) -> Engine:
