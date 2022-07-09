@@ -2,8 +2,7 @@ version: 0.2
 
 env:
   variables:
-    BASE_PATH: terraform
-    CI_ASSUMED_ROLE: arn:aws:iam::110500050896:role/ci_testing-admin
+    LOG_LEVEL: DEBUG
     SQL_PASSWORD: postgres
     SQL_USER: postgres
     ENVIRONMENT: ci
