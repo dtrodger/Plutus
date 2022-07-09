@@ -39,17 +39,17 @@ phases:
       - python -m pytest -s test
       - echo "Building Docker images"
       - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 642030467107.dkr.ecr.us-west-1.amazonaws.com
-      - export PROJECT_VERSION=$(cat setup.cfg | grep -i "version =" | cut -d'=' -f2 | tr -d '", ')
-      - docker build -f Dockerfile -t 642030467107.dkr.ecr.us-west-1.amazonaws.com/plutus:$PROJECT_VERSION .
+      - export VERSION=$(cat setup.cfg | grep -i "version =" | cut -d'=' -f2 | tr -d '", ')
+      - docker build -f Dockerfile -t 642030467107.dkr.ecr.us-west-1.amazonaws.com/plutus:$VERSION .
       - echo Build complete
   post_build:
     commands:
       - echo Staring post build...
       - echo Pushing Docker image to ECR
       - bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"
-      - export PROJECT_VERSION=$(cat setup.cfg | grep -i "version =" | cut -d'=' -f2 | tr -d '", ')
-      - docker tag 729333591458.dkr.ecr.us-east-2.amazonaws.com/create-product-variants:$PROJECT_VERSION 729333591458.dkr.ecr.us-east-2.amazonaws.com/create-product-variants:latest
-      - docker push 729333591458.dkr.ecr.us-east-2.amazonaws.com/create-product-variants:$PROJECT_VERSION
-      - docker push 729333591458.dkr.ecr.us-east-2.amazonaws.com/create-product-variants:latest
+      - export VERSION=$(cat setup.cfg | grep -i "version =" | cut -d'=' -f2 | tr -d '", ')
+      - docker tag 642030467107.dkr.ecr.us-west-1.amazonaws.com/plutus:$VERSION 642030467107.dkr.ecr.us-west-1.amazonaws.com/plutus:latest
+      - docker push 642030467107.dkr.ecr.us-west-1.amazonaws.com/plutus:$VERSION
+      - docker push 642030467107.dkr.ecr.us-west-1.amazonaws.com/plutus:latest
       - echo Build competed on `date`
       - echo Post build complete
