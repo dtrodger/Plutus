@@ -16,7 +16,7 @@ load_dotenv()
 
 from plutus import util
 from plutus.db import util as db_util
-from plutus.aws_ecs_task import ticker_channel as ticker_channel_ecs_task
+from plutus.aws_fargate import ticker_channel as ticker_channel_ecs_task
 
 
 util.configure_logging()
