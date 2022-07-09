@@ -11,7 +11,7 @@ from plutus.api import aws
 
 
 FTX_WEBSOCKET_ENDPOINT = "wss://ftx.com/ws/"
-ENV_SYMBOL_TO_CHANNEL = {"btc": "BTC-PERP"}
+SYMBOL_TO_CHANNEL = {"btc": "BTC-PERP"}
 
 
 async def process_ticker_channel(symbol):
@@ -22,7 +22,7 @@ async def process_ticker_channel(symbol):
     sqs = aws.sqs_client()
     async with connect(f"{FTX_WEBSOCKET_ENDPOINT}") as ws:
         await ws.send(
-            ticker_channel_subscription_request(ENV_SYMBOL_TO_CHANNEL.get(symbol))
+            ticker_channel_subscription_request(SYMBOL_TO_CHANNEL.get(symbol))
         )
         while True:
             raw_event = await ws.recv()

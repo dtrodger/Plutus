@@ -11,7 +11,7 @@ from plutus.api import aws
 
 
 BINANCE_WEBSOCKET_ENDPOINT = "wss://stream.binance.com:9443/ws/"
-ENV_SYMBOL_TO_CHANNEL = {"btc": "btcusdc@ticker"}
+SYMBOL_TO_CHANNEL = {"btc": "btcusdc@ticker"}
 
 
 async def process_ticker_channel(symbol):
@@ -22,7 +22,7 @@ async def process_ticker_channel(symbol):
     sqs = aws.sqs_client()
     pong_time = datetime.datetime.utcnow()
     async with connect(
-        f"{BINANCE_WEBSOCKET_ENDPOINT}{ENV_SYMBOL_TO_CHANNEL.get(symbol)}"
+        f"{BINANCE_WEBSOCKET_ENDPOINT}{SYMBOL_TO_CHANNEL.get(symbol)}"
     ) as ws:
         while True:
             seconds_since_pong = (datetime.datetime.utcnow() - pong_time).total_seconds()
