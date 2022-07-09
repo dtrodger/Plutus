@@ -1,5 +1,5 @@
 # Plutus
 
-Cryptocurrency Exchange Ticker by Second Ingress
+Cryptocurrency Exchange Ticker Ingress
 
 ![archiecture](docs/Plutus.png)
