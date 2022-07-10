@@ -3,7 +3,7 @@ version: "3"
 services:
   postgres:
     container_name: plutus-postgres
-    image: 642030467107.dkr.ecr.us-west-1.amazonaws.com/postgres:1.0
+    image: 642030467107.dkr.ecr.us-west-1.amazonaws.com/postgres:0.1
     environment:
       - POSTGRES_PASSWORD=postgres
     ports:
