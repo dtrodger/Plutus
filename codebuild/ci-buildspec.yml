@@ -26,6 +26,8 @@ phases:
   build:
     commands:
       - echo Starting build...
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 642030467107.dkr.ecr.us-west-1.amazonaws.com
+      - docker-compose -f docker-compose.codebuild.yml up -d
       - python3 -m venv venv
       - source venv/bin/activate
       - python -m pip install pip --upgrade
@@ -37,7 +39,6 @@ phases:
       - echo "Run Pytest unit tests..."
       - python -m pytest -s test
       - echo "Building Docker images"
-      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 642030467107.dkr.ecr.us-west-1.amazonaws.com
       - export VERSION=$(cat setup.cfg | grep -i "version =" | cut -d'=' -f2 | tr -d '", ')
       - docker build -f Dockerfile -t 642030467107.dkr.ecr.us-west-1.amazonaws.com/plutus:$VERSION .
       - echo Build complete
