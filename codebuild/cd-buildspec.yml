@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - ./codebuild/bin/terraform-install.sh
+  build:
+    commands:
+      - echo Starting build...
+      - export LC_ALL="en_US.utf8"
+      - ./codebuild/bin/terraform-apply.sh
+      - echo Build complete
