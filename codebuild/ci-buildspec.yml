@@ -26,7 +26,7 @@ phases:
   build:
     commands:
       - echo Starting build...
-      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 642030467107.dkr.ecr.us-west-1.amazonaws.com
+      - aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 642030467107.dkr.ecr.us-west-1.amazonaws.com
       - docker-compose -f docker-compose.codebuild.yml up -d
       - python3 -m venv venv
       - source venv/bin/activate
@@ -45,6 +45,7 @@ phases:
   post_build:
     commands:
       - echo Staring post build...
+      - aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 642030467107.dkr.ecr.us-west-1.amazonaws.com
       - echo Pushing Docker image to ECR
       - bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"
       - export VERSION=$(cat setup.cfg | grep -i "version =" | cut -d'=' -f2 | tr -d '", ')
