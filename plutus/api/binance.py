@@ -46,9 +46,7 @@ async def process_ticker_channel_event(sqs, symbol, raw_event):
         event["instant"] = event_time
         event["symbol"] = symbol
         event["exchange"] = "binance"
-        import pprint
-        pprint.pp(event)
-        # aws.send_sqs_price_queue_message(sqs, event)
+        aws.send_sqs_price_queue_message(sqs, event)
 
 
 def sql_price_fields_from_sqs_message(sqs_message):
